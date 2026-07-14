@@ -72,11 +72,5 @@ EXPOSE 80
 
 CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-80} -t public"]
 
-RUN echo "===== CURRENT DIRECTORY =====" && pwd && \
-    echo "===== FILES =====" && ls -la && \
-    echo "===== ARTISAN =====" && ls -la artisan && \
-    echo "===== VENDOR =====" && ls -la vendor && \
-    echo "===== AUTOLOAD =====" && ls -la vendor/autoload.php && \
-    echo "===== PUBLIC =====" && ls -la public && \
-    echo "===== BUILD =====" && ls -la public/build && \
-    echo "===== INDEX =====" && ls -la public/index.php
+RUN php artisan about
+RUN php artisan route:list
