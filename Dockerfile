@@ -15,9 +15,6 @@ RUN composer install \
     --optimize-autoloader \
     --no-interaction
 
-# Copy the rest of the application
-COPY . .
-
 # Rebuild optimized autoloader
 RUN composer dump-autoload --optimize
 
@@ -47,7 +44,7 @@ RUN npm run build
 # ============================================================
 # Stage 3: Production Image
 # ============================================================
-FROM php:8.4-fpm-alpine
+FROM php:8.4-cli-alpine
 
 # Install required PHP extensions
 RUN docker-php-ext-install \
@@ -74,3 +71,12 @@ RUN chown -R www-data:www-data \
 EXPOSE 80
 
 CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-80} -t public"]
+
+RUN echo "===== CURRENT DIRECTORY =====" && pwd && \
+    echo "===== FILES =====" && ls -la && \
+    echo "===== ARTISAN =====" && ls -la artisan && \
+    echo "===== VENDOR =====" && ls -la vendor && \
+    echo "===== AUTOLOAD =====" && ls -la vendor/autoload.php && \
+    echo "===== PUBLIC =====" && ls -la public && \
+    echo "===== BUILD =====" && ls -la public/build && \
+    echo "===== INDEX =====" && ls -la public/index.php
