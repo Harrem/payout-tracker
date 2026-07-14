@@ -73,4 +73,4 @@ RUN chown -R www-data:www-data \
 
 EXPOSE 80
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-80}"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-80} -t public"]
