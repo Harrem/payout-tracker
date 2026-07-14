@@ -1,13 +1,14 @@
 # ============================================================
-# Stage 1: Install PHP Dependencies
+# Stage 1: Composer
 # ============================================================
 FROM composer:2 AS composer
 
 WORKDIR /app
 
-# Copy Composer files first for better cache usage
-COPY composer.json composer.lock ./
+# Copy the entire application first
+COPY . .
 
+# Install dependencies
 RUN composer install \
     --no-dev \
     --prefer-dist \
