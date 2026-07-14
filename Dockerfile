@@ -72,5 +72,8 @@ EXPOSE 80
 
 CMD ["php", "-S", "0.0.0.0:80", "-t", "public", "public/index.php"]
 
+ENV TMPDIR=/tmp
+RUN mkdir -p $TMPDIR && chmod 1777 $TMPDIR
+
 RUN php artisan about
 RUN php artisan route:list
