@@ -70,7 +70,7 @@ RUN chown -R www-data:www-data \
 
 EXPOSE 80
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-80} -t public"]
+CMD ["php", "-S", "0.0.0.0:80", "-t", "public", "public/index.php"]
 
 RUN php artisan about
 RUN php artisan route:list
