@@ -64,9 +64,16 @@ COPY --from=composer /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
 
 # Set permissions
-RUN chown -R www-data:www-data \
-    storage \
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
     bootstrap/cache
+
+RUN chmod -R 775 storage bootstrap/cache
+
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
 
@@ -75,5 +82,13 @@ CMD ["php", "-S", "0.0.0.0:80", "-t", "public", "public/index.php"]
 ENV TMPDIR=/tmp
 RUN mkdir -p $TMPDIR && chmod 1777 $TMPDIR
 
+RUN php artisan config:clear
+RUN php artisan view:clear
+RUN php artisan cache:clear
+
 RUN php artisan about
 RUN php artisan route:list
+RUN whoamid
+
+RUN php -r "echo realpath('storage/framework/views'), PHP_EOL;"
+RUN php -r "var_dump(is_writable('storage/framework/views'));"
